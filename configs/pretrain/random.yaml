@@ -1,0 +1,76 @@
+BASE_ENV_CONFIG_PATH: "configs/envs/base_env.yaml"
+
+ENV_NAME: "SimpleRLEnv"
+SIMULATOR_GPU_ID: 0
+TORCH_GPU_ID: 0
+VIDEO_OPTION: []
+# Can be uncommented to generate videos.
+# VIDEO_OPTION: ["disk"]
+
+DATE: ${DATE}
+TENSORBOARD_DIR: logs/{DATE}/random_contrast_invdyn/tb/
+VIDEO_DIR: logs/{DATE}/random_contrast_invdyn/video_dir/
+# This was 6 for mp3d and 8 for gibson in the paper
+NUM_PROCESSES: 4
+# Note:  To train the an RGB only model,
+# you may need to use 8 processes with 4 mini batches,
+# If so, the number of updates should be cut in half
+SENSORS: ["RGB_SENSOR"]
+EVAL_CKPT_PATH_DIR: logs/{DATE}/random_contrast_invdyn/ckpt/
+CHECKPOINT_FOLDER: logs/{DATE}/random_contrast_invdyn/ckpt/
+LOG_DIR: logs/{DATE}/random_contrast_invdyn/
+# total number of updates during interactive learning period
+NUM_UPDATES: 6401
+LOG_INTERVAL: 32
+LOG_FILE: 'logs/{DATE}/random_contrast_invdyn/log.txt'
+CHECKPOINT_INTERVAL: 640
+SAVE_PPO_IMAGE: False
+  
+RL:
+  PPO:
+    lr: 2.5e-4
+    num_steps: 64 # only need to collect rollout in batch
+  
+  DDPPO:
+    sync_frac: 0.6
+    # The PyTorch distributed backend to use
+    distrib_backend: nccl
+    # Visual encoder backbone
+    pretrained_weights: data/ddppo-models/gibson-2plus-resnet50.pth
+    # Initialize with pretrained weights
+    pretrained: False
+    # Initialize just the visual encoder backbone with pretrained weights
+    pretrained_encoder: False
+    # Whether or not the visual encoder backbone will be trained.
+    train_encoder: True
+    # Whether or not to reset the critic linear layer
+    reset_critic: True
+
+    # Model parameters
+    backbone: resnet50
+    rnn_type: LSTM
+    num_recurrent_layers: 1
+  
+  # hypermaraters for contrastive methods implementations
+  UNSUP:
+    gradient_updates: 4
+    cpc: false
+    proj_dim: 128
+    hidden_dim: 256
+    future_num_steps: 4
+    simclr: false
+    mini_batch_size: 16 # to save memory requirement, could increase if access to more compute
+    temperature: 0.07
+    lr: 2.5e-4
+  
+  ACTION:
+    gradient_updates: 4
+    action_dim: 3
+    hidden_dim: 512
+    proj_dim: 512
+    num_steps: 8
+    mini_batch_size: 65 # equivalent to RL.PPO.num_steps
+    invdyn_conv3d: false
+    invdyn_mlp: false
+    lr: 2.5e-4 # equivalent to RL.PPO.lr
+  

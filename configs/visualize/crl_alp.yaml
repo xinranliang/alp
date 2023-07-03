@@ -1,0 +1,104 @@
+BASE_ENV_CONFIG_PATH: "configs/envs/base_env.yaml"
+BASE_TASK_CONFIG_PATH: "habitat-lab/configs/tasks/pointnav_gibson_viz.yaml"
+
+TRAINER_NAME: "ddppo_reward_actpred"
+ENV_NAME: "SimpleRLEnv"
+SIMULATOR_GPU_ID: 0
+TORCH_GPU_ID: 0
+# Can be uncommented to generate videos.
+VIDEO_OPTION: ["tensorboard", "disk"]
+
+DATE: ${DATE}
+TENSORBOARD_DIR: logs/{DATE}/ddppo_crl_alp/crl_proj128_hidden128_lr1e-4_temp7e-2_invdynmlp_lr2.5e-4_proj512_hidden512_step8_update4/maskrcnn_rollout64_length100/tb/
+VIDEO_DIR: logs/{DATE}/ddppo_crl_alp/crl_proj128_hidden128_lr1e-4_temp7e-2_invdynmlp_lr2.5e-4_proj512_hidden512_step8_update4/maskrcnn_rollout64_length100/video_dir/
+MAP_DIR: logs/{DATE}/ddppo_crl_alp/crl_proj128_hidden128_lr1e-4_temp7e-2_invdynmlp_lr2.5e-4_proj512_hidden512_step8_update4/maskrcnn_rollout64_length100/map_dir/
+# This was 6 for mp3d and 8 for gibson in the paper
+NUM_PROCESSES: 10
+TEST_EPISODE_COUNT: -1
+# Note:  To train the an RGB only model,
+# you may need to use 8 processes with 4 mini batches,
+# If so, the number of updates should be cut in half
+SENSORS: ["RGB_SENSOR"]
+EVAL_CKPT_PATH_DIR: /path/to/agent_checkpoint/ckpt.N.pth # TO fill in relative path
+CHECKPOINT_FOLDER: logs/{DATE}/ddppo_crl_alp/crl_proj128_hidden128_lr1e-4_temp7e-2_invdynmlp_lr2.5e-4_proj512_hidden512_step8_update4/maskrcnn_rollout64_length100/ckpt/
+ROLLOUT_DIR: logs/{DATE}/ddppo_crl_alp/crl_proj128_hidden128_lr1e-4_temp7e-2_invdynmlp_lr2.5e-4_proj512_hidden512_step8_update4/maskrcnn_rollout64_length100/samples/
+LOG_DIR: logs/{DATE}/ddppo_crl_alp/crl_proj128_hidden128_lr1e-4_temp7e-2_invdynmlp_lr2.5e-4_proj512_hidden512_step8_update4/maskrcnn_rollout64_length100/
+
+NUM_UPDATES: 1
+LOG_INTERVAL: 1
+LOG_FILE: 'logs/{DATE}/ddppo_crl_alp/crl_proj128_hidden128_lr1e-4_temp7e-2_invdynmlp_lr2.5e-4_proj512_hidden512_step8_update4/maskrcnn_rollout64_length100/log.txt'
+CHECKPOINT_INTERVAL: 1
+SAVE_PPO_IMAGE: False
+  
+RL:
+  PPO:
+    # ppo params
+    clip_param: 0.1
+    ppo_epoch: 4
+    # This was 4 in the paper
+    num_mini_batch: 2 # batch_size = num_steps // num_mini_batch
+    value_loss_coef: 0.5
+    entropy_coef: 0.01
+    lr: 2.5e-4
+    eps: 1e-5
+    max_grad_norm: 0.5
+    num_steps: 64
+    hidden_size: 512
+    use_gae: True
+    gamma: 0.99
+    tau: 0.95
+    use_linear_clip_decay: True
+    use_linear_lr_decay: True
+    use_normalized_advantage: False
+    reward_window_size: 50
+  
+  DDPPO:
+    sync_frac: 0.6
+    # The PyTorch distributed backend to use
+    distrib_backend: nccl
+    # Visual encoder backbone
+    pretrained_weights: data/ddppo-models/gibson-2plus-resnet50.pth
+    # Initialize with pretrained weights
+    pretrained: False
+    # Initialize just the visual encoder backbone with pretrained weights
+    pretrained_encoder: False
+    # Whether or not the visual encoder backbone will be trained.
+    train_encoder: True
+    # Whether or not to reset the critic linear layer
+    reset_critic: True
+
+    # Model parameters
+    backbone: resnet50
+    rnn_type: LSTM
+    num_recurrent_layers: 1
+  
+  REWARD:
+    rnd: false 
+    rnd_hidden_dim: 512 
+    rnd_repr_dim: 64 
+    rnd_lr: 0.0001
+    crl: True 
+    crl_hidden_dim: 128
+    crl_repr_dim: 128
+    crl_lr: 0.0001
+    temperature: 0.07
+    gradient_updates: 1
+  
+  ACTION:
+    gradient_updates: 4
+    action_dim: 3
+    hidden_dim: 512
+    proj_dim: 512
+    num_steps: 8
+    mini_batch_size: 65 # equivalent to RL.PPO.num_steps
+    invdyn_conv3d: false
+    invdyn_mlp: True
+    lr: 2.5e-4 # equivalent to RL.PPO.lr
+  
+  MASKRCNN:
+    rollout: false # uncomment to not saving labeled samples for downstream tasks
+    resolution: 256
+    rollout_between_step: 64 # number of updates in between data collection
+    rollout_length: 100 # number of labeled images to save for each single policy checkpoint
+    rollout_prob: 0.5 # probability of each labeled image to be saved and used as training samples
+    # asymptotically we need rollout_length / rollout_prob labelled images from trajectory
