@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ALP: Action-Aware Embodied Learning for Perception</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">ALP: Action-Aware Embodied Learning for Perception</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://xinranliang.github.io/xinranliang/">Xinran Liang</a><sup>1,2</sup>,</span>
+            <span class="author-block">
+              Anthony Han<sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="https://wilson1yan.github.io/">Wilson Yan</a><sup>1</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://www.cs.cmu.edu/~aditirag/">Aditi Raghunathan</a><sup>1,3</sup>,
+            </span>
+            <span class="author-block">
+              <a href="http://people.eecs.berkeley.edu/~pabbeel/">Pieter Abbeel</a><sup>1</sup>
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>University of California, Berkeley</span>
+            <span class="author-block"><sup>2</sup>Princeton University</span>
+            <span class="author-block"><sup>3</sup>Carnegie Mellon University</span>
+          </div>
+
+          <div class="column has-text-centered">
+            arxiv preprint, 2023
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- Paper Link. -->
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2306.10190"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/xinranliang/alp"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+                  </a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Current methods in training and benchmarking vision models exhibit an over-reliance on passive, curated datasets. 
+            Although models trained on these datasets have shown strong performance in a wide variety of tasks 
+            such as classification, detection, and segmentation, 
+            they fundamentally are unable to generalize to an ever-evolving world due to constant out-of-distribution shifts of input data. 
+            Therefore, instead of training on fixed datasets, can we approach learning in a more human-centric and adaptive manner?
+
+            In this paper, we introduce Action-Aware Embodied Learning for Perception (ALP), 
+            an embodied learning framework that incorporates action information into representation learning 
+            through a combination of optimizing a reinforcement learning policy and an inverse dynamics prediction objective. 
+            Our method actively explores in complex 3D environments 
+            to both learn generalizable task-agnostic visual representations as well as collect downstream training data. 
+
+            We show that ALP outperforms existing baselines in several downstream perception tasks. 
+            In addition, we show that by training on actively collected data more relevant to the environment and task, 
+            our method generalizes more robustly to downstream tasks compared to models pre-trained on fixed datasets such as ImageNet.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-full-width">
+    <!-- Method. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Method Overview</h2>
+        <div class="content has-text-justified">
+          <img src="./static/images/Figure-Method.png"
+                 class="interpolation-image"
+                 alt="method figure."/>
+          <p>
+            We present ALP, an embodied learning framework based on active exploration 
+            for visual representations and perception tasks.
+            Our framework consists of two stages. 
+          </p>
+          <p>
+            In Stage 1, we allow the agent to actively explore in visual environments from intrinsic motivation to discover diverse observations. 
+            We propose a coupled approach to incorporate action information from embodied movements and 
+            learn a set of shared visual representations that jointly optimizes a policy gradient objective and an inverse dynamics predictions loss. 
+          </p>
+          <p>
+            In Stage 2, we label a small subset of collected samples from active exploration to obtain better training data for downstream perception tasks. 
+            We initialize from the learned representation in Stage 1 to improve performance of the perception model.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Method. -->
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-full-width">
+    <!-- Visualization. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Visualizations</h2>
+        <div class="content has-text-justified">
+          <p>
+            We combine ALP with baseline exploration methods and visualize learned policies
+            in environment maps using the Gibson dataset of the Habitat simulator.
+            RND-ALP and CRL-ALP show wider coverage of environments maps and longer movements trajectory exploration baselines.
+          </p>
+        </div>
+        <div>
+          <video id="rnd-1" autoplay controls muted loop playsinline width="45%">
+            <source src="./static/videos/rnd.mp4"
+                    type="video/mp4">
+          </video>
+          <video id="rnd-alp-1" autoplay controls muted loop playsinline width="45%">
+            <source src="./static/videos/rnd_alp.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div>RND (left) and RND-ALP (right)</div>
+        
+        <div>
+          <video id="crl-1" autoplay controls muted loop playsinline width="45%">
+            <source src="./static/videos/crl.mp4"
+                    type="video/mp4">
+          </video>
+          <video id="crl-alp-1" autoplay controls muted loop playsinline width="45%">
+            <source src="./static/videos/crl_alp.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+
+        <div>CRL (left) and CRL-ALP (right)</div>
+
+      </div>
+    </div>
+    <!--/ Visualization. -->
+  </div>
+</section>
+
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@article{liang2023alp,
+      title={ALP: Action-Aware Embodied Learning for Perception},
+      author={Liang, Xinran and Han, Anthony and Yan, Wilson and Raghunathan, Aditi and Abbeel, Pieter},
+      journal={arXiv preprint arXiv:2306.10190},
+      year={2023}
+    }</code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <a class="icon-link"
+         href="https://arxiv.org/abs/2306.10190">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+      <a class="icon-link" href="https://github.com/xinranliang/alp" class="external-link" disabled>
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            Website template from <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
