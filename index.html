@@ -147,17 +147,19 @@
                  alt="method figure."/>
           <p>
             We present ALP, an embodied learning framework based on active exploration 
-            for visual representations and perception tasks.
+            for visual representation learning and downstream perception tasks.
             Our framework consists of two stages. 
           </p>
           <p>
             In Stage 1, we allow the agent to actively explore in visual environments from intrinsic motivation to discover diverse observations. 
-            We propose a coupled approach to incorporate action information from embodied movements and 
-            learn a set of shared visual representations that jointly optimizes a policy gradient objective and an inverse dynamics predictions loss. 
+            We propose a coupled approach to incorporate action information and 
+            learn a set of shared visual representations that jointly optimizes 
+            a reinforcement learning objective as indirect action signals 
+            and an inverse dynamics prediction loss as explicit action signals. 
           </p>
           <p>
             In Stage 2, we label a small subset of collected samples from active exploration to obtain better training data for downstream perception tasks. 
-            We initialize from the learned representation in Stage 1 to improve performance of the perception model.
+            We initialize from the pretrained representation in Stage 1 to improve the performance of the perception model.
           </p>
         </div>
       </div>
@@ -176,15 +178,15 @@
           <p>
             We combine ALP with baseline exploration methods and visualize learned policies
             in environment maps using the Gibson dataset of the Habitat simulator.
-            RND-ALP and CRL-ALP show wider coverage of environments maps and longer movements trajectory exploration baselines.
+            RND-ALP and CRL-ALP show wider coverage of environments and longer trajectory movements than exploration baselines.
           </p>
         </div>
         <div>
-          <video id="rnd-1" autoplay controls muted loop playsinline width="45%">
+          <video id="rnd" autoplay controls muted loop playsinline width="45%">
             <source src="./static/videos/rnd.mp4"
                     type="video/mp4">
           </video>
-          <video id="rnd-alp-1" autoplay controls muted loop playsinline width="45%">
+          <video id="rnd-alp" autoplay controls muted loop playsinline width="45%">
             <source src="./static/videos/rnd_alp.mp4"
                     type="video/mp4">
           </video>
@@ -192,11 +194,11 @@
         <div>RND (left) and RND-ALP (right)</div>
         
         <div>
-          <video id="crl-1" autoplay controls muted loop playsinline width="45%">
+          <video id="crl" autoplay controls muted loop playsinline width="45%">
             <source src="./static/videos/crl.mp4"
                     type="video/mp4">
           </video>
-          <video id="crl-alp-1" autoplay controls muted loop playsinline width="45%">
+          <video id="crl-alp" autoplay controls muted loop playsinline width="45%">
             <source src="./static/videos/crl_alp.mp4"
                     type="video/mp4">
           </video>
