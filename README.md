@@ -1,6 +1,10 @@
 # ALP: Action-Aware Embodied Learning for Perception
 
-Current methods in training and benchmarking vision models exhibit an over-reliance on passive, curated datasets. Although models trained on these datasets have shown strong performance in a wide variety of tasks such as classification, detection, and segmentation, they fundamentally are unable to generalize to an ever-evolving world due to constant out-of-distribution shifts of input data. Therefore, instead of training on fixed datasets, can we approach learning in a more human-centric and adaptive manner? In this paper, we introduce \textbf{A}ction-aware Embodied \textbf{L}earning for \textbf{P}erception (ALP), an embodied learning framework that incorporates action information into representation learning through a combination of optimizing policy gradients through reinforcement learning and inverse dynamics prediction objectives. Our method actively explores complex 3D environments to both learn generalizable task-agnostic representations as well as collect downstream training data. We show that ALP outperforms existing baselines in object detection and semantic segmentation. In addition, we show that by training on actively collected data more relevant to the environment and task, our method generalizes more robustly to downstream tasks compared to models pre-trained on fixed datasets such as ImageNet.
+[paper](https://arxiv.org/abs/2306.10190) | [website](https://xinranliang.github.io/alp/)
+
+## Overview
+
+Current methods in training and benchmarking vision models exhibit an over-reliance on passive, curated datasets. Although models trained on these datasets have shown strong performance in a wide variety of tasks such as classification, detection, and segmentation, they fundamentally are unable to generalize to an ever-evolving world due to constant out-of-distribution shifts of input data. Therefore, instead of training on fixed datasets, can we approach learning in a more human-centric and adaptive manner? In this paper, we introduce Action-Aware Embodied Learning for Perception (ALP), an embodied learning framework that incorporates action information into representation learning through a combination of optimizing a reinforcement learning policy and an inverse dynamics prediction objective. Our method actively explores in complex 3D environments to both learn generalizable task-agnostic visual representations as well as collect downstream training data. We show that ALP outperforms existing baselines in several downstream perception tasks. In addition, we show that by training on actively collected data more relevant to the environment and task, our method generalizes more robustly to downstream tasks compared to models pre-trained on fixed datasets such as ImageNet.
 
 ![method](./docs/Figure-Method.png)
 
@@ -44,7 +48,7 @@ Install additional dependencies:
 pip install -r requirements.txt
 ```
 
-Please refer to [`data/README.md`](./data/README.md) for details in setting up training and evaluation dataset.
+Please refer to `data/README.md` for details in setting up training and evaluation dataset.
 
 
 ## Running the code
@@ -90,7 +94,7 @@ To evaluate Mask-RCNN models, in addition to above training script, add `--eval-
 
 ## Citation
 
-If you find our code and work useful for your research, please consider citing our [paper](https://arxiv.org/abs/2306.10190):
+If you find our code and work useful for your research, please cite our paper:
 
 ```
 @article{liang2023alp,
